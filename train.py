@@ -1184,6 +1184,7 @@ def train(options):
 
 
 def test(options):
+    pdb.set_trace()  # <-- Break point added here
     if not os.path.exists(options.test_dir):
         os.system("mkdir -p %s" % options.test_dir)
         pass
@@ -1194,7 +1195,7 @@ def test(options):
         # print(numbers)
         return numbers
 
-    # print(options.checkpoint_dir)
+	# print(options.checkpoint_dir)
     tf.reset_default_graph()
 
     filenames = []
@@ -1762,8 +1763,6 @@ if __name__ == '__main__':
         from evaluate import *
 
         args.batchSize = 1
-        args.separateIconLoss = False
-        args.drawFinal = False
         if args.loss == '5':
             hybrid = args.hybrid
             for loss in '01234':
