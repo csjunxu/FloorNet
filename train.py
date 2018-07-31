@@ -1189,7 +1189,7 @@ def test(options):
         os.system("mkdir -p %s" % options.test_dir)
         pass
 
-    if options.useCache == 1 and os.path.exists(options.test_dir + '/network_numbers.npy'):
+    if options.useCache == '1' and os.path.exists(options.test_dir + '/network_numbers.npy'):
         numbers = np.load(options.test_dir + '/network_numbers.npy')[()]
         print([(k, v[0] / v[1], v[0] / v[2]) for k, v in numbers.iteritems()])
         # print(numbers)
