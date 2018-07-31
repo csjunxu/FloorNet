@@ -1210,7 +1210,7 @@ def test(options):
     if '4' in options.dataset:
         filenames.append('data/SUNCG_val.tfrecords')
     if options.dataset == '5':
-        filenames = ['data/Lianjia-samples_test.tfrecords',]
+        filenames = ['data/Lianjia_test.tfrecords',]
 
     dataset = getDatasetVal(filenames, '', '4' in options.branches, options.batchSize)
 
