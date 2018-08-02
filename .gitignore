@@ -2,3 +2,5 @@
 .idea
 .DS_Store
 *.tfrecords
+*.png
+*.png

@@ -1184,7 +1184,7 @@ def train(options):
 
 
 def test(options):
-    pdb.set_trace()  # <-- Break point added here
+    #pdb.set_trace()  # <-- Break point added here
     if not os.path.exists(options.test_dir):
         os.system("mkdir -p %s" % options.test_dir)
         pass
@@ -1328,7 +1328,7 @@ def test(options):
                 statistics = visualizeBatch(options, 'test_' + str(iteration), pred,
                                             {'corner': gt['corner'], 'icon': gt['icon'], 'room': gt['room'],
                                              'density': debug['x0_topdown'][:, :, :, -1],
-                                             'image_path': inp['image_path']}, dataset, savePredictions=True) # savePredictions= False
+                                             'image_path': inp['image_path']}, dataset, savePredictions=args.savePredictions) # savePredictions= False
 
                 for k, v in statistics.iteritems():
                     if k in statisticsSum:
@@ -1661,6 +1661,9 @@ def parse_args():
     parser.add_argument('--evaluateImage', dest='evaluateImage',
                         help='evaluate image',
                         action='store_true')
+	parser.add_argument('--savePrediction', dest='savePrediction',
+						help='save prediction',
+						action='store_true')
 
     args = parser.parse_args()
 
