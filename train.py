@@ -1328,7 +1328,7 @@ def test(options):
                 statistics = visualizeBatch(options, 'test_' + str(iteration), pred,
                                             {'corner': gt['corner'], 'icon': gt['icon'], 'room': gt['room'],
                                              'density': debug['x0_topdown'][:, :, :, -1],
-                                             'image_path': inp['image_path']}, dataset) # savePredictions= False
+                                             'image_path': inp['image_path']}, dataset, savePredictions=False)
 
                 for k, v in statistics.iteritems():
                     if k in statisticsSum:
@@ -1373,7 +1373,7 @@ def test(options):
     return numbers
 
 
-def visualizeBatch(options, prefix, pred_dict, gt_dict, datasetFlag):
+def visualizeBatch(options, prefix, pred_dict, gt_dict, datasetFlag, savePredictions=False):
     # To update the modified time for options.test_dir
     if os.path.exists(options.test_dir + '/dummy'):
         # os.rmdir(options.test_dir + '/dummy')
@@ -1381,8 +1381,7 @@ def visualizeBatch(options, prefix, pred_dict, gt_dict, datasetFlag):
     else:
         os.mkdir(options.test_dir + '/dummy')
         pass
-
-    if options.savePredictions:
+    if savePredictions:
         print('save')
         np.save(options.test_dir + '/dummy/gt_dict.npy', gt_dict)
         np.save(options.test_dir + '/dummy/pred_dict.npy', pred_dict)
@@ -1661,9 +1660,6 @@ def parse_args():
     parser.add_argument('--evaluateImage', dest='evaluateImage',
                         help='evaluate image',
                         action='store_true')
-    parser.add_argument('--savePredictions', dest='savePredictions',
-						help='save predictions',
-						default='False', type=bool)
 
     args = parser.parse_args()
 
