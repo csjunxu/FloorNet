@@ -18,6 +18,7 @@ def enablePrint():
 
 
 def evaluate(options):
+	pdb.set_trace()
     if not os.path.exists(options.test_dir):
         os.system("mkdir -p %s" % options.test_dir)
         pass
@@ -58,11 +59,8 @@ def evaluate(options):
     if '4' in options.dataset:
         filenames.append('data/SUNCG_val.tfrecords')
         pass
-	if '5' in options.dataset:
-		filenames.append('data/Lianjia_test.tfrecords')
-		pass
-	#if options.dataset == '5':
-	#	filenames = ['data/Lianjia_test.tfrecords', ]
+	if options.dataset == '5':
+		filenames = ['data/Lianjia_test.tfrecords', ]
 
 	dataset = getDatasetVal(filenames, '', '4' in options.branches, options.batchSize)
 

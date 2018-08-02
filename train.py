@@ -1328,7 +1328,7 @@ def test(options):
                 statistics = visualizeBatch(options, 'test_' + str(iteration), pred,
                                             {'corner': gt['corner'], 'icon': gt['icon'], 'room': gt['room'],
                                              'density': debug['x0_topdown'][:, :, :, -1],
-                                             'image_path': inp['image_path']}, dataset, savePredictions=False)
+                                             'image_path': inp['image_path']}, dataset, savePredictions=True) # savePredictions= False
 
                 for k, v in statistics.iteritems():
                     if k in statisticsSum:
@@ -1761,7 +1761,7 @@ if __name__ == '__main__':
         evaluateBatch(args)
     elif args.task == 'evaluate':
         from evaluate import *
-
+	pdb.set_trace()
         args.batchSize = 1
         if args.loss == '5':
             hybrid = args.hybrid
