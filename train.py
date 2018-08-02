@@ -1661,9 +1661,9 @@ def parse_args():
     parser.add_argument('--evaluateImage', dest='evaluateImage',
                         help='evaluate image',
                         action='store_true')
-	parser.add_argument('--savePrediction', dest='savePrediction',
-						help='save prediction',
-						action='store_true')
+    parser.add_argument('--savePredictions', dest='savePredictions',
+						help='save predictions',
+						default='False', type=bool)
 
     args = parser.parse_args()
 
