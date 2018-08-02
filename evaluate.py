@@ -59,9 +59,9 @@ def evaluate(options):
     if '4' in options.dataset:
         filenames.append('data/SUNCG_val.tfrecords')
         pass
-
-    if '5' in options.dataset:
-        filenames = ['data/Lianjia-samples_test.tfrecords',]
+	if '5' in options.dataset:
+		filenames.append('data/Lianjia_test.tfrecords')
+		pass
 
     dataset = getDatasetVal(filenames, '', '4' in options.branches, options.batchSize)
 

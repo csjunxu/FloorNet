@@ -1761,7 +1761,7 @@ if __name__ == '__main__':
         evaluateBatch(args)
     elif args.task == 'evaluate':
         from evaluate import *
-
+        pdb.set_trace()
         args.batchSize = 1
         if args.loss == '5':
             hybrid = args.hybrid
