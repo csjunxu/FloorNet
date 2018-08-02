@@ -59,8 +59,8 @@ def evaluate(options):
     if '4' in options.dataset:
         filenames.append('data/SUNCG_val.tfrecords')
         pass
-	if '5' in options.dataset:
-		filenames = ['data/Lianjia_test.tfrecords']
+	if options.dataset == '5':
+		filenames = ['data/Lianjia_test.tfrecords', ]
 
 	dataset = getDatasetVal(filenames, '', '4' in options.branches, options.batchSize)
 	pdb.set_trace()
@@ -124,36 +124,36 @@ def evaluate(options):
 					continue
 				print('testing', losses[0] / acc[0], losses[1] / acc[1], losses[2] / acc[2])
 
-                gt = {'corner': gt['corner'], 'corner_values': gt['corner_values'], 'icon': gt['icon'],
-                      'room': gt['room'], 'density': debug['x0_topdown'][:, :, :, -1], 'image_path': inp['image_path'],
-                      'num_corners': gt['num_corners'], 'image_flags': image_flags}
-                if iteration == 0:
-                    gtAll = gt
-                    predAll = pred
-                else:
-                    for k, v in gt.iteritems():
-                        gtAll[k] = np.concatenate([gtAll[k], v], axis=0)
-                        continue
-                    for k, v in pred.iteritems():
-                        predAll[k] = np.concatenate([predAll[k], v], axis=0)
-                        continue
-                    pass
-                continue
-        except tf.errors.OutOfRangeError:
-            print('Finish testing')
-            pass
+				gt = {'corner': gt['corner'], 'corner_values': gt['corner_values'], 'icon': gt['icon'],
+					  'room': gt['room'], 'density': debug['x0_topdown'][:, :, :, -1], 'image_path': inp['image_path'],
+					  'num_corners': gt['num_corners'], 'image_flags': image_flags}
+				if iteration == 0:
+					gtAll = gt
+					predAll = pred
+				else:
+					for k, v in gt.iteritems():
+						gtAll[k] = np.concatenate([gtAll[k], v], axis=0)
+						continue
+					for k, v in pred.iteritems():
+						predAll[k] = np.concatenate([predAll[k], v], axis=0)
+						continue
+					pass
+				continue
+		except tf.errors.OutOfRangeError:
+			print('Finish testing')
+			pass
 
-        pass
+		pass
 
-    if options.useCache != -1:
-        np.save(options.test_dir + '/dummy/gt_dict.npy', gtAll)
-        np.save(options.test_dir + '/dummy/pred_dict.npy', predAll)
-        pass
-    if options.useCache == -2:
-        return
+	if options.useCache != -1:
+		np.save(options.test_dir + '/dummy/gt_dict.npy', gtAll)
+		np.save(options.test_dir + '/dummy/pred_dict.npy', predAll)
+		pass
+	if options.useCache == -2:
+		return
 
-    evaluateBatch(options, gtAll, predAll)
-    return
+	evaluateBatch(options, gtAll, predAll)
+	return
 
 
 def evaluateBatch(options, gt_dict=None, pred_dict=None):
