@@ -1764,12 +1764,12 @@ if __name__ == '__main__':
             pass
         test(args)
     elif args.task == 'check':
-        # args.batchSize = 1
+		from evaluate import *
+		# args.batchSize = 1
         args.test_dir += '/dataset_' + args.dataset
-        evaluateBatch(args)
-    elif args.task == 'evaluate':
+		evaluateBatch(args)
+	elif args.task == 'evaluate':
         from evaluate import *
-	pdb.set_trace()
         args.batchSize = 1
         if args.loss == '5':
             hybrid = args.hybrid
