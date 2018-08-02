@@ -58,7 +58,6 @@ def evaluate(options):
     if '4' in options.dataset:
         filenames.append('data/SUNCG_val.tfrecords')
         pass
-	pdb.set_trace()
 	if options.dataset == '5':
 		filenames = ['data/Lianjia_test.tfrecords', ]
 	pdb.set_trace()

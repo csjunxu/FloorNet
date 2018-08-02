@@ -1761,6 +1761,7 @@ if __name__ == '__main__':
         evaluateBatch(args)
     elif args.task == 'evaluate':
         from evaluate import *
+
         args.batchSize = 1
         if args.loss == '5':
             hybrid = args.hybrid
@@ -1772,10 +1773,10 @@ if __name__ == '__main__':
                     else:
                         args.hybrid = '1'
                         pass
-				addArgs(args)
-				args.test_dir += '/dataset_' + args.dataset
-				evaluate(args)
-				continue
+                addArgs(args)
+                args.test_dir += '/dataset_' + args.dataset
+                evaluate(args)
+                continue
             args.hybrid = hybrid
             args.useCache = 1
             args.loss = '5'
