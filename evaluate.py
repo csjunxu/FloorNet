@@ -43,7 +43,6 @@ def evaluate(options):
 
     # print(options.checkpoint_dir)
     tf.reset_default_graph()
-
     filenames = []
     if '0' in options.dataset:
         filenames.append('data/Syn_val.tfrecords')
@@ -59,11 +58,12 @@ def evaluate(options):
     if '4' in options.dataset:
         filenames.append('data/SUNCG_val.tfrecords')
         pass
+	pdb.set_trace()
 	if options.dataset == '5':
 		filenames = ['data/Lianjia_test.tfrecords', ]
-
-	dataset = getDatasetVal(filenames, '', '4' in options.branches, options.batchSize)
 	pdb.set_trace()
+	dataset = getDatasetVal(filenames, '', '4' in options.branches, options.batchSize)
+
 	iterator = dataset.make_one_shot_iterator()
 	input_dict, gt_dict = iterator.get_next()
 
