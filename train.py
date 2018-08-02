@@ -46,6 +46,13 @@ DATASETS = ['syn', 'real', 'scannet', "matterport", "SUNCG"]
 
 HEATMAP_SCALE = 3
 
+def str2bool(v):
+    if v.lower() in ('yes', 'true', 't', 'y', '1'):
+        return True
+    elif v.lower() in ('no', 'false', 'f', 'n', '0'):
+        return False
+    else:
+        raise argparse.ArgumentTypeError('Boolean value expected.')
 
 def mergeFeatures(features):
     if True:
@@ -1660,9 +1667,8 @@ def parse_args():
     parser.add_argument('--evaluateImage', dest='evaluateImage',
                         help='evaluate image',
                         action='store_true')
-    parser.add_argument('--savePredictions', dest='savePredictions',
-                        help='save predictions',
-                        default=False, type=bool)
+    parser.add_argument("--savePredictions", type=str2bool, nargs='?',
+						default=False, help="Activate nice mode.")
 
     args = parser.parse_args()
 
