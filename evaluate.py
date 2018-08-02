@@ -58,9 +58,12 @@ def evaluate(options):
     if '4' in options.dataset:
         filenames.append('data/SUNCG_val.tfrecords')
         pass
-	if options.dataset == '5':
-		filenames = ['data/Lianjia_test.tfrecords', ]
-	pdb.set_trace()
+	if '5' in options.dataset:
+		filenames.append('data/Lianjia_test.tfrecords')
+		pass
+	#if options.dataset == '5':
+	#	filenames = ['data/Lianjia_test.tfrecords', ]
+
 	dataset = getDatasetVal(filenames, '', '4' in options.branches, options.batchSize)
 
 	iterator = dataset.make_one_shot_iterator()
