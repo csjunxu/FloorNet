@@ -60,70 +60,69 @@ def evaluate(options):
         filenames.append('data/SUNCG_val.tfrecords')
         pass
 	if '5' in options.dataset:
-		filenames.append('data/Lianjia_test.tfrecords')
-		pass
+		filenames = ['data/Lianjia_test.tfrecords']
 
-    dataset = getDatasetVal(filenames, '', '4' in options.branches, options.batchSize)
+	dataset = getDatasetVal(filenames, '', '4' in options.branches, options.batchSize)
+	pdb.set_trace()
+	iterator = dataset.make_one_shot_iterator()
+	input_dict, gt_dict = iterator.get_next()
 
-    iterator = dataset.make_one_shot_iterator()
-    input_dict, gt_dict = iterator.get_next()
+	pred_dict, debug_dict = build_graph(options, input_dict)
+	dataset_flag = input_dict['flags'][0, 0]
+	flags = input_dict['flags'][:, 1]
+	loss, loss_list = build_loss(options, pred_dict, gt_dict, dataset_flag, debug_dict, input_dict['flags'])
 
-    pred_dict, debug_dict = build_graph(options, input_dict)
-    dataset_flag = input_dict['flags'][0, 0]
-    flags = input_dict['flags'][:, 1]
-    loss, loss_list = build_loss(options, pred_dict, gt_dict, dataset_flag, debug_dict, input_dict['flags'])
+	var_to_restore = [v for v in tf.global_variables()]
 
-    var_to_restore = [v for v in tf.global_variables()]
+	config = tf.ConfigProto()
+	config.gpu_options.allow_growth = True
+	config.allow_soft_placement = True
+	# config.log_device_placement=True
 
-    config = tf.ConfigProto()
-    config.gpu_options.allow_growth = True
-    config.allow_soft_placement = True
-    # config.log_device_placement=True
+	statisticsSum = {k: [0.0, 0.0, 0.0] for k in ['wall', 'door', 'icon', 'room']}
 
-    statisticsSum = {k: [0.0, 0.0, 0.0] for k in ['wall', 'door', 'icon', 'room']}
+	numbers = {}
 
-    numbers = {}
+	with tf.Session(config=config) as sess:
+		sess.run(tf.global_variables_initializer())
+		tflearn.is_training(False)
+		# var_to_restore = [v for v in var_to_restore if 'pred_room' not in v.name]
+		var_to_restore = [v for v in var_to_restore if 'is_training' not in v.name]
+		loader = tf.train.Saver(var_to_restore)
+		if options.startIteration <= 0:
+			loader.restore(sess, "%s/checkpoint.ckpt" % (options.checkpoint_dir))
+		else:
+			loader.restore(sess, "%s/checkpoint_%d.ckpt" % (options.checkpoint_dir, options.startIteration))
+			pass
 
-    with tf.Session(config=config) as sess:
-        sess.run(tf.global_variables_initializer())
-        tflearn.is_training(False)
-        # var_to_restore = [v for v in var_to_restore if 'pred_room' not in v.name]
-        var_to_restore = [v for v in var_to_restore if 'is_training' not in v.name]
-        loader = tf.train.Saver(var_to_restore)
-        if options.startIteration <= 0:
-            loader.restore(sess, "%s/checkpoint.ckpt" % (options.checkpoint_dir))
-        else:
-            loader.restore(sess, "%s/checkpoint_%d.ckpt" % (options.checkpoint_dir, options.startIteration))
-            pass
+		# if tf.train.checkpoint_exists("%s/%s.ckpt"%(dumpdir,keyname)):
+		# saver.restore(sess,"%s/%s.ckpt"%(dumpdir,keyname))
+		# pass
 
-        # if tf.train.checkpoint_exists("%s/%s.ckpt"%(dumpdir,keyname)):
-        # saver.restore(sess,"%s/%s.ckpt"%(dumpdir,keyname))
-        # pass
+		MOVING_AVERAGE_DECAY = 1
+		losses = [0., 0., 0.]
+		acc = [1e-4, 1e-4, 1e-4]
 
-        MOVING_AVERAGE_DECAY = 1
-        losses = [0., 0., 0.]
-        acc = [1e-4, 1e-4, 1e-4]
+		cornerCounters = {}
+		for cornerType in CORNER_RANGES.keys():
+			cornerCounters[cornerType] = np.zeros(3)
+			pass
 
-        cornerCounters = {}
-        for cornerType in CORNER_RANGES.keys():
-            cornerCounters[cornerType] = np.zeros(3)
-            pass
+		globalCornerCounter = np.zeros(3)
+		iconCounter = np.zeros(2)
+		roomCounter = np.zeros(2)
 
-        globalCornerCounter = np.zeros(3)
-        iconCounter = np.zeros(2)
-        roomCounter = np.zeros(2)
+		numImages = 0
+		try:
+			for iteration in xrange(options.numTestingImages):
+				total_loss, losses, dataset, image_flags, gt, pred, debug, inp = sess.run(
+					[loss, loss_list, dataset_flag, flags, gt_dict, pred_dict, debug_dict, input_dict])
 
-        numImages = 0
-        try:
-            for iteration in xrange(options.numTestingImages):
-                total_loss, losses, dataset, image_flags, gt, pred, debug, inp = sess.run(
-                    [loss, loss_list, dataset_flag, flags, gt_dict, pred_dict, debug_dict, input_dict])
-
-                for lossIndex, value in enumerate(losses):
-                    losses[lossIndex] = losses[lossIndex] * MOVING_AVERAGE_DECAY + value
-                    acc[lossIndex] = acc[lossIndex] * MOVING_AVERAGE_DECAY + 1
-                    continue
-                print('testing', losses[0] / acc[0], losses[1] / acc[1], losses[2] / acc[2])
+				for lossIndex, value in enumerate(losses):
+					losses[lossIndex] = losses[lossIndex] * MOVING_AVERAGE_DECAY + value
+					acc[lossIndex] = acc[lossIndex] * MOVING_AVERAGE_DECAY + 1
+					continue
+				print('testing', losses[0] / acc[0], losses[1] / acc[1], losses[2] / acc[2])
 
                 gt = {'corner': gt['corner'], 'corner_values': gt['corner_values'], 'icon': gt['icon'],
                       'room': gt['room'], 'density': debug['x0_topdown'][:, :, :, -1], 'image_path': inp['image_path'],
