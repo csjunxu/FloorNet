@@ -2105,8 +2105,6 @@ def reconstructFloorplan(wallCornerHeatmaps, doorCornerHeatmaps, iconCornerHeatm
         wallCornerHeatmaps, heatmapValueThresholdWall, gap=GAPS['wall_extraction'], augment=enable_augment,
         h_points=enable_augment, gt=gt)
 
-    pdb.set_trace()
-
     if len(wallLines) > 2000:
         # todo: maybe down-sampling?
         pass
