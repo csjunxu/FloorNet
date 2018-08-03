@@ -1624,7 +1624,7 @@ def parse_args():
                         default=10, type=int)
     parser.add_argument('--visualizeReconstruction', dest='visualizeReconstruction',
                         help='whether to visualize flooplan reconstruction or not',
-                        default=0, type=int)
+                        default=1, type=int)
     parser.add_argument('--numFinalChannels', dest='numFinalChannels', help='the number of final channels', default=256,
                         type=int)
     parser.add_argument('--numIterations', dest='numIterations', help='the number of iterations', default=10000,
@@ -1662,8 +1662,8 @@ def parse_args():
                         help='draw final',
                         action='store_false')
     parser.add_argument('--separateIconLoss', dest='separateIconLoss',
-                        help='separate loss for icon',
-                        action='store_false')
+                        default=False,help='separate loss for icon',
+                        type=str2bool, nargs='?')
     parser.add_argument('--evaluateImage', dest='evaluateImage',
                         help='evaluate image',
                         action='store_true')
@@ -1764,10 +1764,10 @@ if __name__ == '__main__':
             pass
         test(args)
     elif args.task == 'check':
-		from evaluate import *
-		# args.batchSize = 1
-		args.test_dir += '/dataset_' + args.dataset
-		evaluateBatch(args)
+        from evaluate import *
+        # args.batchSize = 1
+        args.test_dir += '/dataset_' + args.dataset
+        evaluateBatch(args)
     elif args.task == 'evaluate':
         from evaluate import *
         args.batchSize = 1
