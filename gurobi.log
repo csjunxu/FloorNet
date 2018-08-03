@@ -42,3 +42,47 @@ Solution count 6: 0.0581683 1.25638 1.25638 ... 8.55899
 Optimal solution found (tolerance 1.00e-04)
 Best objective 5.816828453482e-02, best bound 5.816828453482e-02, gap 0.0000%
 Warning: linear constraint 0 and linear constraint 1 have the same name "label_sum"
+
+Gurobi 8.0.1 (mac64, Python) logging started Thu Aug  2 21:25:25 2018
+
+Academic license - for non-commercial use only
+Changed value of parameter TimeLimit to 120.0
+   Prev: 1e+100  Min: 0.0  Max: 1e+100  Default: 1e+100
+Optimize a model with 17535 rows, 11458 columns and 58845 nonzeros
+Variable types: 0 continuous, 11458 integer (11458 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [2e-09, 5e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+00]
+Presolve removed 15128 rows and 3835 columns
+Presolve time: 4.10s
+Presolved: 2407 rows, 7623 columns, 28060 nonzeros
+Variable types: 0 continuous, 7623 integer (7623 binary)
+Found heuristic solution: objective 8.5589912
+
+Root relaxation: objective -2.039864e+00, 1041 iterations, 0.02 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0   -2.03986    0   19    8.55899   -2.03986   124%     -    4s
+H    0     0                       4.1027694   -2.03986   150%     -    4s
+H    0     0                       2.8881936   -2.03986   171%     -    4s
+H    0     0                       1.2563832   -2.03986   262%     -    4s
+     0     0   -2.03986    0   19    1.25638   -2.03986   262%     -    4s
+     0     0   -2.03986    0   19    1.25638   -2.03986   262%     -    6s
+*    0     0               0       0.0581683    0.05817  0.00%     -    6s
+
+Cutting planes:
+  Gomory: 1
+  Zero half: 1
+
+Explored 1 nodes (1432 simplex iterations) in 6.29 seconds
+Thread count was 4 (of 4 available processors)
+
+Solution count 6: 0.0581683 1.25638 1.25638 ... 8.55899
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 5.816828453482e-02, best bound 5.816828453482e-02, gap 0.0000%
+Warning: linear constraint 0 and linear constraint 1 have the same name "label_sum"

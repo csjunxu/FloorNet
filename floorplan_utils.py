@@ -1087,7 +1087,7 @@ def drawResultImageFinal(width, height, result):
             iconImage = rotateImage(iconImage, 1)
 
         iconImage = cv2.resize(iconImage, slot_size)
-
+        pdb.set_trace()
         image[y_1:y_2 + 1, x_1:x_2 + 1] = iconImage
         if name == "washing_basin":
             print('basin pose', [x_1, y_1, x_2, y_2])
